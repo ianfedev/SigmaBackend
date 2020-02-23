@@ -3,7 +3,6 @@ import dependencyInjectorLoader from './dependencyInjector';
 import mongooseLoader from './mongoose';
 import jobsLoader from './jobs';
 import Logger from './logger';
-import './events';
 
 export default async ({ expressApp }) => {
     const mongoConnection = await mongooseLoader();

@@ -6,6 +6,7 @@ export default ({ mongoConnection, models }: { mongoConnection; models: { name: 
     try {
         models.forEach(m => {
             Container.set(m.name, m.model);
+            LoggerInstance.info(m.name + ' injected correctly');
         });
 
         const agendaInstance = agendaFactory({ mongoConnection });
