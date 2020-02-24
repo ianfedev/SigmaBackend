@@ -2,12 +2,13 @@ import { Service, Inject } from "typedi";
 import argon2 from 'argon2';
 import { IUser, IUserGeneration } from "../interfaces/IUser";
 import { randomBytes } from "crypto";
+import { Logger } from "winston";
 
 @Service()
 export default class UserService {
   constructor(
     @Inject('userModel') private userModel : Models.UserModel,
-    @Inject('logger') private logger
+    @Inject('logger') private logger : Logger
   ){}
 
   public async createUser(userInputRegistration : IUserGeneration): Promise<IUser> {
@@ -20,6 +21,8 @@ export default class UserService {
         password: hashedPassword
       });
       if (!userRecord) throw new Error("User can not be created.");
+      Reflect.deleteProperty(userRecord, 'password');
+      Reflect.deleteProperty(userRecord, 'salt');
       return userRecord.toObject();
     } catch (e) {
       this.logger.error(e);
@@ -31,6 +34,8 @@ export default class UserService {
     try {
       const userRecord = await this.userModel.findById(id);
       if (!userRecord) throw new Error("User was not registered.");
+      Reflect.deleteProperty(userRecord, 'password');
+      Reflect.deleteProperty(userRecord, 'salt');
       return userRecord.toObject();
     } catch (e) {
       this.logger.error(e);
@@ -40,10 +45,12 @@ export default class UserService {
 
   public async updateUser(id : string, updatable : IUser): Promise<IUser> {
     try {
-      delete updatable.password;
-      delete updatable.salt;
-      const userRecord = await this.userModel.findByIdAndUpdate(id, updatable);
+      Reflect.deleteProperty(updatable, 'password');
+      Reflect.deleteProperty(updatable, 'salt');
+      const userRecord = await this.userModel.findByIdAndUpdate(id, updatable, {new: true});
       if (!userRecord) throw new Error("User was not registered.");
+      Reflect.deleteProperty(userRecord, 'password');
+      Reflect.deleteProperty(userRecord, 'salt');
       return userRecord.toObject();
     } catch (e) {
       this.logger.error(e);

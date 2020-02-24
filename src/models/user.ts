@@ -1,5 +1,5 @@
 import { IUser } from '../interfaces/IUser';
-import mongoose from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
 const User = new mongoose.Schema(
   {
@@ -13,6 +13,14 @@ const User = new mongoose.Schema(
       unique: true,
       index: true,
     },
+    group: [{
+      _id: false,
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Group'
+      },
+      joined: Schema.Types.Date
+    }],
     password: String,
     salt: String
   },

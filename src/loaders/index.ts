@@ -12,10 +12,16 @@ export default async ({ expressApp }) => {
         name: 'userModel',
         model: require('../models/user').default
     };
+    const groupModel = {
+        name: 'groupModel',
+        model: require('../models/group').default
+    };
+
     const { agenda } = await dependencyInjectorLoader({
         mongoConnection,
         models: [
-            userModel
+          userModel,
+          groupModel
         ],
     });
     Logger.info('Dependency injector loaded');
