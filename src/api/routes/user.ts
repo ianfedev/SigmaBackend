@@ -12,6 +12,9 @@ export default (app: Router) => {
 
   route.post(
     '/create',
+    middlewares.authentication,
+    middlewares.userAttachment,
+    middlewares.permissions("user.create"),
     celebrate({
       body: Joi.object({
         name: Joi.string().required(),
@@ -33,6 +36,7 @@ export default (app: Router) => {
     '/view/:id',
     middlewares.authentication,
     middlewares.userAttachment,
+    middlewares.permissions("user.read"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const service : UserService = Container.get(UserService);
@@ -45,6 +49,9 @@ export default (app: Router) => {
 
   route.put(
     '/update/:id',
+    middlewares.authentication,
+    middlewares.userAttachment,
+    middlewares.permissions("user.update"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const service : UserService = Container.get(UserService);

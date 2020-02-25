@@ -1,7 +1,4 @@
 import { Service, Inject } from 'typedi';
-import jwt from 'jsonwebtoken';
-import config from '../config';
-import argon2 from 'argon2';
 import { IUser } from '../interfaces/IUser';
 import { IGroup } from "../interfaces/IGroup";
 import { Logger } from "winston";
@@ -55,6 +52,8 @@ export default class GroupService {
     try {
       const userRecord = await this.userModel.findByIdAndUpdate(id, {$push: {group: {id: group, joined: new Date()}}}, {new: true});
       if (!userRecord) throw new Error("Queried user does not exist.");
+      Reflect.deleteProperty(userRecord, 'password');
+      Reflect.deleteProperty(userRecord, 'salt');
       return userRecord;
     } catch (e) {
       this.logger.error(e);
@@ -66,6 +65,8 @@ export default class GroupService {
     try {
       const userRecord = await this.userModel.findByIdAndUpdate(id, {$pull: {group: {id: group}}}, {new: true});
       if (!userRecord) throw new Error("Queried user does not exist.");
+      Reflect.deleteProperty(userRecord, 'password');
+      Reflect.deleteProperty(userRecord, 'salt');
       return userRecord;
     } catch (e) {
       this.logger.error(e);

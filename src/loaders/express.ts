@@ -24,9 +24,9 @@ export default ({ app }: { app: express.Application }) => {
     });
 
     app.use((err, req, res, next) => {
-        if (err.name === 'UnauthorizedError') {
+        if (err.message.toString() === 'UnauthorizedError' || err.name === 'UnauthorizedError') {
             return res
-                .status(err.status)
+                .status(401)
                 .send({ message: err.message })
                 .end();
         }

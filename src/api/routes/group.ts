@@ -15,6 +15,7 @@ export default (app: Router) => {
     '/create',
     middlewares.authentication,
     middlewares.userAttachment,
+    middlewares.permissions("group.create"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const groupService : GroupService = Container.get(GroupService);
@@ -29,6 +30,7 @@ export default (app: Router) => {
     '/view/:id',
     middlewares.authentication,
     middlewares.userAttachment,
+    middlewares.permissions("group.read"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const groupService : GroupService = Container.get(GroupService);
@@ -43,6 +45,7 @@ export default (app: Router) => {
     '/update/:id',
     middlewares.authentication,
     middlewares.userAttachment,
+    middlewares.permissions("group.update"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const groupService : GroupService = Container.get(GroupService);
@@ -63,6 +66,7 @@ export default (app: Router) => {
     }),
     middlewares.authentication,
     middlewares.userAttachment,
+    middlewares.permissions("group.assign"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const groupService : GroupService = Container.get(GroupService);
@@ -83,6 +87,7 @@ export default (app: Router) => {
     }),
     middlewares.authentication,
     middlewares.userAttachment,
+    middlewares.permissions("group.assign"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const groupService : GroupService = Container.get(GroupService);

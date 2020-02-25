@@ -6,28 +6,58 @@ const Group = new mongoose.Schema(
   {
     name: {
       type: String,
-      index: true,
+      index: true
+    },
+    admin: {
+      type: Boolean,
+      default: true
     },
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      unique: false
     },
-    user: {
-      create: {
-        type: Boolean,
-        default: false
+    permissions: {
+      _id: false,
+      user: {
+        create: {
+          type: Boolean,
+          default: false
+        },
+        read: {
+          type: Boolean,
+          default: false
+        },
+        update: {
+          type: Boolean,
+          default: false
+        },
+        delete: {
+          type: Boolean,
+          default: false
+        }
       },
-      read: {
-        type: Boolean,
-        default: false
-      },
-      update: {
-        type: Boolean,
-        default: false
-      },
-      delete: {
-        type: Boolean,
-        default: false
+      group: {
+        create: {
+          type: Boolean,
+          default: false
+        },
+        read: {
+          type: Boolean,
+          default: false
+        },
+        update: {
+          type: Boolean,
+          default: false
+        },
+        assign: {
+          type: Boolean,
+          default: false
+        },
+        delete: {
+          type: Boolean,
+          default: false
+        }
       }
     }
   },
