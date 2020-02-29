@@ -1,5 +1,6 @@
-export interface IUser {
-  _id: string;
+import { IModel } from "./IModel";
+
+export interface IUser extends IModel{
   name: string;
   email: string;
   password: string;

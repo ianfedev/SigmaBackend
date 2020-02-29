@@ -1,6 +1,7 @@
-import { Service, Inject } from "typedi";
-import argon2 from 'argon2';
+import { Inject, Service } from "typedi";
+import argon2 from "argon2";
 import { IUser, IUserGeneration } from "../interfaces/IUser";
+import { IPaginateResult } from "mongoose";
 import { randomBytes } from "crypto";
 import { Logger } from "winston";
 
@@ -37,6 +38,15 @@ export default class UserService {
       Reflect.deleteProperty(userRecord, 'password');
       Reflect.deleteProperty(userRecord, 'salt');
       return userRecord.toObject();
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+  }
+
+  public async listUsers(page : number): Promise<IPaginateResult<IUser>> {
+    try {
+      return await this.userModel.paginate({}, { page: page, perPage: 10 });
     } catch (e) {
       this.logger.error(e);
       throw e;

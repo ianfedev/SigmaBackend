@@ -1,4 +1,4 @@
-import { Document, Model } from 'mongoose';
+import { Document, PaginateModel } from 'mongoose';
 import { IUser } from '../../interfaces/IUser';
 import { IGroup } from "../../interfaces/IGroup";
 
@@ -10,7 +10,7 @@ declare global {
   }
 
   namespace Models {
-    export type UserModel = Model<IUser & Document>;
-    export type GroupModel = Model<IGroup & Document>;
+    export type UserModel = PaginateModel<IUser & Document>;
+    export type GroupModel = PaginateModel<IGroup & Document>;
   }
 }

@@ -1,5 +1,7 @@
 import { IUser } from '../interfaces/IUser';
 import mongoose, { Schema } from "mongoose";
+import { mongoosePagination } from "ts-mongoose-pagination";
+
 
 const User = new mongoose.Schema(
   {
@@ -27,4 +29,5 @@ const User = new mongoose.Schema(
   { timestamps: true }
 );
 
+User.plugin(mongoosePagination);
 export default mongoose.model<IUser & mongoose.Document>('User', User);
