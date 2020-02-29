@@ -47,6 +47,14 @@ export default (app: Router) => {
       }
     });
 
+  route.get(
+    '/me',
+    middlewares.authentication,
+    middlewares.userAttachment,
+    async (req: Request, res: Response) => {
+      return res.status(200).json(req.currentUser);
+    });
+
   route.put(
     '/update/:id',
     middlewares.authentication,

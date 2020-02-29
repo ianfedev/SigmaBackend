@@ -19,7 +19,6 @@ export default (app: Router) => {
     }),
     async (req: Request, res: Response, next: NextFunction) => {
       const logger : Logger = Container.get('logger');
-      logger.debug('Executing log-in request %o', req.body);
       try {
         const { email, password } = req.body;
         const authServiceInstance : AuthService = Container.get(AuthService);
