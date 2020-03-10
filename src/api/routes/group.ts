@@ -4,7 +4,9 @@ import GroupService from "../../services/groupService";
 import { IGroup } from "../../interfaces/IGroup";
 import middlewares from "../middlewares";
 import { celebrate, Joi } from "celebrate";
+import { IPaginateResult } from "mongoose";
 import { IUser } from "../../interfaces/IUser";
+import UserService from "../../services/userService";
 const route = Router();
 
 export default (app: Router) => {
@@ -38,6 +40,23 @@ export default (app: Router) => {
         return res.json(group).status(200);
       } catch (e) {
         return next(e);
+      }
+    });
+
+  route.get(
+    '/list/:page?',
+    middlewares.authentication,
+    middlewares.userAttachment,
+    middlewares.permissions("group.read"),
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const service : GroupService = Container.get(GroupService);
+        let pages: number = 1;
+        if (req.params.page) pages = + req.params.page;
+        const group : IPaginateResult<IGroup> = await service.listGroup(pages);
+        return res.status(200).json(group);
+      } catch (e) {
+        next(e);
       }
     });
 

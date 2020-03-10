@@ -1,6 +1,7 @@
 import { Service, Inject } from 'typedi';
 import { IUser } from '../interfaces/IUser';
 import { IGroup } from "../interfaces/IGroup";
+import { IPaginateResult } from "mongoose";
 import { Logger } from "winston";
 
 @Service()
@@ -31,6 +32,15 @@ export default class GroupService {
       const groupRecord = await this.groupModel.findById(id);
       if (!groupRecord) throw new Error("Queried group does not exist.");
       return groupRecord;
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+  }
+
+  public async listGroup(page : number): Promise<IPaginateResult<IGroup>> {
+    try {
+      return await this.groupModel.paginate({}, { page: page, perPage: 10 });
     } catch (e) {
       this.logger.error(e);
       throw e;
