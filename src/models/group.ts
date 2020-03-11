@@ -11,12 +11,13 @@ const Group = new mongoose.Schema(
     },
     admin: {
       type: Boolean,
-      default: true
+      default: false
     },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      unique: false
+      unique: false,
+      autopopulate: true
     },
     permissions: {
       _id: false,
@@ -66,4 +67,5 @@ const Group = new mongoose.Schema(
 );
 
 Group.plugin(mongoosePagination);
+Group.plugin(require('mongoose-autopopulate'));
 export default mongoose.model<IGroup & mongoose.Document>('Group', Group);
